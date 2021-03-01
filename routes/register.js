@@ -7,18 +7,21 @@ const {body, validationResult} =require("express-validator");
 const {User} = require("../models/user");
 const router = express.Router();
 
-router.post("/", body('name').isLength({min: 3}).withMessage("Name length less than 3"), async (req, res)=>{
+router.post("/", 
+            body('name').isLength({min: 3}).withMessage("Name length less than 3"),
+            body('email').isEmail().isLength({min: 7, max: 30}),
+            async (req, res)=>{
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    
     const userData = {
         name : req.body.name,
         email : req.body.email,
         password : await bcrypt.hashSync(req.body.password, 8)
-    }
+    } 
     
     try{
         User.find({email: req.body.email}, async (error, users)=>{
