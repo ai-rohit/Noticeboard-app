@@ -14,7 +14,7 @@ router.get("/", async(req, res)=>{
             if(error){
                 return res.send({status: "error", message: "Something went wrong"});
             }
-            return res.send({status: "success", data:{notice: notice}});
+            return res.status(200).send({status: "success", data:{notice: notice}});
         });
     }catch(ex){
         return res.status(400).send({status: "error", message: "Something went wrong"});
@@ -30,11 +30,9 @@ router.post("/", noticeValidationRules(), verifyLogin,async (req, res)=>{
     }
 
     try{
-        
         const noticeDetails = {
                         noticeTitle: req.body.noticeTitle,
                         noticeDescription: req.body.noticeDescription,
-                        noticeDate: new Date(),
                         noticeAuthor: req.body.noticeAuthor
                         }
         const notice = new Notice(noticeDetails);

@@ -8,8 +8,6 @@ const verifyLogin = (req, res, next)=>{
         if(!token) return res.send({status: "error", message: "Can't access! Needs login to continue"});
 
         const user = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-        // console.log("Token:", token);
-        //console.log(user);
         req.user = user;
         next();
     }catch(ex){

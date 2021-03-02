@@ -2,7 +2,7 @@
 const express = require("express");
 //const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
-const {body, validationResult} =require("express-validator");
+const {validationResult} =require("express-validator");
 const {userValidationRules} = require("../validations/validation");
 
 const {User} = require("../models/user");
@@ -13,7 +13,7 @@ router.post("/", userValidationRules(),
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).send({status: "fail", message: errors.array()[0]});
+      return res.status(400).send({status: "fail", message: errors.array()[0].msg});
     }
 
     const userData = {

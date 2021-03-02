@@ -1,4 +1,4 @@
-const {body, validationResult} = require("express-validator");
+const {body} = require("express-validator");
 
 const userValidationRules = ()=>{
     return [body('name').isLength({min: 3}).withMessage("Name length less than 3"),
