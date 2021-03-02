@@ -1,10 +1,12 @@
 const express = require("express");
 const {User} = require("../models/user");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { userValidationRules } = require("../validations/validation");
 
 const router = express.Router();
 
-router.post("/", async (req, res)=>{
+router.post("/", userValidationRules(), async (req, res)=>{
     let email = req.body.email;
     let password = req.body.password;
 
@@ -17,7 +19,9 @@ router.post("/", async (req, res)=>{
 
             if(users.length>0){
                 if(await bcrypt.compare(password, users[0].password)){
-                    return res.status(200).send({status: "success", message: "Logged in successfully"});
+                    const token = jwt.sign({userId: users[0]._id, name: users[0].name}, process.env.JWT_PRIVATE_KEY, {expiresIn: "10d"});
+                    //res.header('auth-token', token);
+                    return res.status(200).send({status: "success", data: {token: token}});
                 }else{
                     //console.log(result);
                     return res.status(400).send({status: "fail", message: "Password Incorrect"});
@@ -28,7 +32,7 @@ router.post("/", async (req, res)=>{
             
         });
     }catch(ex){
-        console.error(ex);
+        res.status(500).send({status: "error", message: "something went wrong"});
     }
         
    
