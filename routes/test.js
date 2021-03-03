@@ -21,4 +21,19 @@ router.get("/users", verifyLogin, getUserAuthorization, async (req, res)=>{
 
 });
 
+router.get("/users/:category", async (req, res)=>{
+    const category = req.params.category;
+
+    await User.find({name: category}, async(error, result)=>{
+        if(error){
+            return res.send("something went wrong");
+        }
+
+        return res.send({category: result});
+    });
+
+})
+
+
+
 module.exports = router;

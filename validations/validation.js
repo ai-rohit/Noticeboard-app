@@ -11,7 +11,8 @@ const noticeValidationRules = ()=>{
     return [body('noticeTitle').isString().withMessage("Not a valid Title").isLength({min: 3, max: 100}).withMessage("Title must be more than 3 and less than 100 charcaters."),
             body('noticeDescription').isString().withMessage("Not a valid Title").isLength({min: 30, max: 500}).withMessage("Description must exceed 30 and should be less than 500 characters"),
             //body('noticeDate').trim().isDate().withMessage("not a valid date"),
-            body('noticeAuthor').isString().withMessage("Not a valid author").isLength({min: 3, max: 50}).withMessage("Author name should be between 3 to 50 characters")]
+            //body('noticeAuthor').isString().withMessage("Not a valid author").isLength({min: 3, max: 50}).withMessage("Author name should be between 3 to 50 characters")]
+            ]
 }
 
 module.exports.userValidationRules = userValidationRules;

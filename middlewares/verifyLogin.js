@@ -11,7 +11,7 @@ const verifyLogin = (req, res, next)=>{
         req.user = user;
         next();
     }catch(ex){
-        return res.send({status: "error", message: "Access denied! Header missing"});
+        return res.send({status: "error", message: "Access denied!"});
     }
 }
 

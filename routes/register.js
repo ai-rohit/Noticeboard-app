@@ -4,6 +4,8 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const {validationResult} =require("express-validator");
 const {userValidationRules} = require("../validations/validation");
+const {verifyLogin} = require("../middlewares/verifyLogin");
+const {deleteUserPermission} = require("../middlewares/authorization");
 
 const {User} = require("../models/user");
 const router = express.Router();
@@ -33,13 +35,28 @@ router.post("/", userValidationRules(),
             }else{
                 const user = new User(userData);
                 const result = await user.save();
-                return res.send({status: true, message: "User registered", result: result});
+                return res.send({status: "access", message: "User registered"});
                 
             }; 
         })
     }catch(ex){
-        console.error("Something went wrong");
+        res.status(500).send({status: "error", message: "Something went wrong"});
     }
 });
+
+router.delete("/users/delete/:id", verifyLogin, deleteUserPermission, async(req, res)=>{
+    const id = req.params.id;
+
+    await User.findByIdAndDelete(id, (error, result)=>{
+        if(error){
+            return res.status(400).send({
+                status: "error", message: "Something went wrong"
+            });
+        }
+        return res.status(200).send({status: "success", data: null});
+    })
+});
+
+
 
 module.exports = router;
