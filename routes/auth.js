@@ -19,15 +19,14 @@ router.post("/", userValidationRules(), async (req, res)=>{
 
             if(users.length>0){
                 if(await bcrypt.compare(password, users[0].password)){
-                    const token = jwt.sign({userId: users[0]._id, name: users[0].name}, process.env.JWT_PRIVATE_KEY, {expiresIn: "10d"});
-                    //res.header('auth-token', token);
+                    const token = jwt.sign({userId: users[0]._id, name: users[0].name, role: users[0].role}, process.env.JWT_PRIVATE_KEY, {expiresIn: "10d"});
+
                     return res.status(200).send({status: "success", data: {token: token}});
                 }else{
-                    //console.log(result);
-                    return res.status(400).send({status: "fail", message: "Password Incorrect"});
+                    return res.status(400).send({status: "fail", data: {password: "Password Incorrect"}});
                 }
             }else{
-                return res.status(400).send({status: "fail", message: "email not found"});
+                return res.status(400).send({status: "fail", data: {email: "email not found"}});
             }
             
         });
