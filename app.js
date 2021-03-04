@@ -1,9 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const multer = require("multer");
+const path = require("path");
+
 const register = require("./routes/register");
 const auth = require("./routes/auth");
 const notice = require("./routes/notice");
 const test = require("./routes/test");
+
 
 require("dotenv").config();
 
@@ -13,9 +18,14 @@ mongoose.connect("mongodb://localhost/TestProject", {useNewUrlParser: true, useU
 .then(()=> console.log("Connected to database"))
 .catch((error)=> console.log(error));
 
-app.use(express.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(express.json());
+app.use('/uploads', express.static(__dirname + 'uploads'));
+
+app.use(bodyParser.json());
+
+// const directory = path.join(__dirname, 'public');
+// app.use("/uploads", express.static(directory));
 
 app.use("/register", register);
 app.use("/login", auth);

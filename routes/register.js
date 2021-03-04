@@ -1,11 +1,7 @@
-//import modules
 const express = require("express");
-//const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const {validationResult} =require("express-validator");
 const {userValidationRules} = require("../validations/validation");
-const {verifyLogin} = require("../middlewares/verifyLogin");
-const {deleteUserPermission} = require("../middlewares/authorization");
 
 const {User} = require("../models/user");
 const router = express.Router();
