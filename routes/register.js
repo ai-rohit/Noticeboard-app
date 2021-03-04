@@ -35,7 +35,7 @@ router.post("/", userValidationRules(),
             }else{
                 const user = new User(userData);
                 const result = await user.save();
-                return res.send({status: "access", message: "User registered"});
+                return res.send({status: "success", message: "User registered"});
                 
             }; 
         })
@@ -44,19 +44,17 @@ router.post("/", userValidationRules(),
     }
 });
 
-router.delete("/users/delete/:id", verifyLogin, deleteUserPermission, async(req, res)=>{
-    const id = req.params.id;
+// router.delete("/users/delete/:id", verifyLogin, deleteUserPermission, async(req, res)=>{
+//     const id = req.params.id;
 
-    await User.findByIdAndDelete(id, (error, result)=>{
-        if(error){
-            return res.status(400).send({
-                status: "error", message: "Something went wrong"
-            });
-        }
-        return res.status(200).send({status: "success", data: null});
-    })
-});
-
-
+//     await User.findByIdAndDelete(id, (error, result)=>{
+//         if(error){
+//             return res.status(400).send({
+//                 status: "error", message: "Something went wrong"
+//             });
+//         }
+//         return res.status(200).send({status: "success", data: null});
+//     })
+// });
 
 module.exports = router;

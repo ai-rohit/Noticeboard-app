@@ -30,13 +30,14 @@ async function noticePermissions(req, res, next){
                         if(error){
                             return res.status(400).send({status: "error", message:error.message});
                         }else{
-                            if(noticeDetail.noticeAuthor._id==user.userId || user.Role === Role.admin){
+                            if(noticeDetail.noticeAuthor._id==user.userId || user.role === Role.admin){
                                 next();
                             }else{
+                                
                                 return(res.status(400).send({status:"fail", message:"Unauthorized to perform the action"}))
                             }
                         }
-                    })
+                    });
     }catch(ex){
         return res.status(400).send({status:"error", message:"Something went wrong"});
     }

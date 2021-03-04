@@ -60,4 +60,28 @@ router.delete("/delete/:id", verifyLogin, noticePermissions, async (req, res)=>{
     }
 });
 
+router.put("/update/:id", verifyLogin, noticePermissions, noticeValidationRules(), async(req, res)=>{
+    const id = req.params.id;
+    const noticeDescription = req.body.noticeDescription;
+    
+    try{   
+        await Notice.findById(id, (error, notice)=>{
+            if(error) return res.status(400).send({Status: "error", message: "Something went wrong"});
+
+            if(!notice) return res.status(400).send({status: "fail", data:{notice: "No notice exists"}});
+
+            notice.set({noticeDescription: noticeDescription});
+            notice.save((error, result)=>{
+                if(error){
+                    return res.status(400).send({status: "error", message: "something went wrong"});
+                }
+                return res.status(200).send({status: 'success', data:{notice: "updated"}});
+            });
+            
+        });
+    }catch(ex){
+        return res.status(400).send({status:"error", message: "Something went wrong"});
+    }
+});
+
 module.exports = router;
