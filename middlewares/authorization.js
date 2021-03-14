@@ -27,6 +27,9 @@ async function noticePermissions(req, res, next){
                     .select("noticeAuthor")
                     .populate("noticeAuthor", "_id")
                     .exec((error, noticeDetail)=>{
+                        if(!noticeDetail){
+                            return res.status(400).send({status: "fail", data:{notice: "The notice doesn't exists"}})
+                        }
                         if(error){
                             return res.status(400).send({status: "error", message:error.message});
                         }else{
@@ -34,7 +37,7 @@ async function noticePermissions(req, res, next){
                                 next();
                             }else{
                                 
-                                return(res.status(400).send({status:"fail", message:"Unauthorized to perform the action"}))
+                                return(res.status(400).send({status:"fail", data:{user: "User not authorized"}}))
                             }
                         }
                     });
