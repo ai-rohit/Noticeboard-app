@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const Notice = mongoose.model("Notice", new mongoose.Schema({
+const noticeSchema = new mongoose.Schema({
     noticeTitle: {
                  type: String,
                  required: true,
@@ -22,10 +22,17 @@ const Notice = mongoose.model("Notice", new mongoose.Schema({
                    type: mongoose.Schema.Types.ObjectId, 
                    ref: 'User'
                 },
+    group:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:"Group"
+    },
     noticeImage: {
                 type:String, 
                 required: true
             }
-}));
+}, {timestamps: true,
+    toJSON:{virtuals:true},
+    toObject:{virtuals: true}})
+const Notice = mongoose.model("Notice", noticeSchema);
 
 module.exports.Notice = Notice;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const {Role} = require("../roles");
 
-const User = mongoose.model("User", new mongoose.Schema({
+const usersSchema = new mongoose.Schema({
     name: {
         type: String, 
         required: true,
@@ -23,7 +23,16 @@ const User = mongoose.model("User", new mongoose.Schema({
         type: String, 
         required: true, 
         default:Role.basic, enum: ["basic", "admin"]
-    }
-}));
+    },
+}, {timestamps: true,
+    toJSON:{virtuals:true},
+    toObject:{virtuals: true}});
+
+usersSchema.virtual("notices", {
+    ref:"Notice",
+    localField:"_id",
+    foreignField: "noticeAuthor"
+})
+const User = mongoose.model("User", usersSchema);
 
 exports.User = User;

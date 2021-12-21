@@ -23,5 +23,7 @@ app.use(bodyParser.json());
 app.use("/register", register); 
 app.use("/login", auth);
 app.use("/notices", notice);
+app.use("/groups", require("./routes/group"))
 
+app.use(require("./middlewares/errorHandler"));
 app.listen(process.env.PORT, ()=>{console.log(`listening to port ${process.env.PORT}`)});
