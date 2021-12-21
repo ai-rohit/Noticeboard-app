@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const app = express();
 
-mongoose.connect("mongodb://localhost/TestProject", {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+mongoose.connect("mongodb://localhost/Noticeboard", {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 .then(()=> console.log("Connected to database"))
 .catch((error)=> console.log(error.message));
 
