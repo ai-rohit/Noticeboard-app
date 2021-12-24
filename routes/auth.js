@@ -21,7 +21,7 @@ router.post("/",
 
                             if(users.length>0){
                                 if(await bcrypt.compare(password, users[0].password)){
-                                    const token = jwt.sign({userId: users[0]._id, 
+                                    const token = jwt.sign({_id: users[0]._id, 
                                                             name: users[0].name, 
                                                             role: users[0].role}, 
                                                             process.env.JWT_PRIVATE_KEY, 
