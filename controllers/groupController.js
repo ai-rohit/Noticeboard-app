@@ -140,5 +140,31 @@ module.exports = {
         }catch(ex){
             return next(new CustomError(ex.stack, 400));
         }
+    }),
+    leaveGroup: wrapAsync(async (req, res, next) => {
+        const group = await Group.findById(req.params.id);
+        if(!group) return next(new CustomError("No group exists", 404));
+        const groupUser = await UserGroup.findOne({group: group._id, user: req.user._id});
+        if(!groupUser) return next(new CustomError("You are not a member of this group", 400));
+        await groupUser.remove();
+        return res.json({
+            status:"success",
+            data:{
+                group: group
+            }
+        })
+    }),
+    removeGroupUser: wrapAsync(async (req, res, next) => {
+        const group = await Group.findById(req.params.id);
+        if(!group) return next(new CustomError("No group exists", 404));
+        const groupUser = await UserGroup.findOne({group: group._id, user: req.body.user});
+        if(!groupUser) return next(new CustomError("The user is not a member of this group", 400));
+        await groupUser.remove();
+        return res.json({
+            status:"success",
+            data:{
+                group: group
+            }
+        })
     })
 };

@@ -24,6 +24,11 @@ const usersSchema = new mongoose.Schema({
         required: true, 
         default:Role.basic, enum: ["basic", "admin"]
     },
+    userType:{
+        type:String,
+        enum:["local", "google", "facebook"],
+        default:"local"
+    }
 }, {timestamps: true,
     toJSON:{virtuals:true},
     toObject:{virtuals: true}});
